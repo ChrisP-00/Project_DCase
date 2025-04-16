@@ -1,0 +1,75 @@
+﻿using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Utilities;
+
+
+public class LoginManager : MonoSingleton<LoginManager>
+{
+    [SerializeField] public bool hostDebug = true;
+
+    [SerializeField] public string memberId;
+
+    [SerializeField] public string nickName;
+
+    private async void Start()
+    {
+        Debug.Log("LoginManager start ");
+        await HostHandler.CheckHostConnection();
+    }
+
+    public async UniTask<bool> Login()
+    {
+        bool isLoginSuccess = false;
+        
+        Request.Req_Login login = new Request.Req_Login();
+        
+        login.MemberId = memberId;
+        login.UnityDeviceNumber = SystemInfo.deviceUniqueIdentifier;
+        
+        var result = await ServerManager.Instance.LoginAsync(login);
+
+        DebugUtility.Log($"{result.ResultCodes} : Result");
+        
+        if (result.ResultCodes != ResultCodes.Ok)
+        {
+            Request.Req_CreateAccount createAccount = new Request.Req_CreateAccount();
+            createAccount.MemberId = memberId;
+            createAccount.UnityDeviceNumber = SystemInfo.deviceUniqueIdentifier;
+            createAccount.Nickname = nickName;
+            
+            var createResult = await ServerManager.Instance.CreateAccountAsync(createAccount);
+
+            DebugUtility.Log($"{createResult.ResultCodes} : Result");
+
+            
+            if (createResult.ResultCodes == ResultCodes.Ok)
+            {
+                DebugUtility.Log("Create Account Success");
+                
+                result = await ServerManager.Instance.LoginAsync(login);
+                if (result.ResultCodes == ResultCodes.Ok)
+                {
+                      DebugUtility.Log("2 Login success");
+                      isLoginSuccess = true;
+                }
+                else
+                {
+                    DebugUtility.Log("Login Failed");
+                }
+            }
+            else
+            {
+                DebugUtility.Log("Create Account Failed");  
+            }
+        }
+        else
+        {
+            DebugUtility.Log("1 Login success");
+             isLoginSuccess = true;
+        }
+
+        return isLoginSuccess;
+    }
+    
+}
