@@ -18,6 +18,10 @@ public class UIManager : MonoSingleton<UIManager>
             // scene 이동     
             SceneManager.LoadSceneAsync("MainScene");
         }
+        else
+        {
+            SceneManager.LoadSceneAsync("MainScene");
+        }
     }
     
     public void OnClickTestAngry()
