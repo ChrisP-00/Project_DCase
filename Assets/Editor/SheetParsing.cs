@@ -293,7 +293,7 @@ public partial class SheetParsing : EditorWindow
 
             // Dictionary 생성
             string keyType = ConvertTypeToCSharp(types[1]); // 첫 번째 컬럼을 Dictionary 키로 사용
-            writer.WriteLine($"\tpublic static Dictionary<{keyType}, {className}> tableDic = new Dictionary<{keyType}, {className}>();");
+            writer.WriteLine($"\tpublic static Dictionary<int, {className}> tableDic = new Dictionary<int, {className}>();");
 
             writer.WriteLine("}");
         }
