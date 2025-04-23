@@ -24,6 +24,7 @@ public class Response
         public DateTime Last_Login_At { get; set; }
     }
 
+    [Serializable]
     public class User_Character
     {
         public int Character_Index { get; set; }
@@ -33,11 +34,13 @@ public class Response
         public bool is_acquired { get; set; }
     }
 
+    [Serializable]
     public class User_Inventory
     {
         public int Item_Index { get; set; }
     }
 
+    [Serializable]
     public class User_Equip
     {
         public int Character_Index { get; set; }
@@ -51,6 +54,7 @@ public class Response
         public int Quantity { get; set; }
     }
 
+    [Serializable]
     public class User_Daily_Missions
     {
         public int Daily_Mission_Index { get; set; }
@@ -59,6 +63,7 @@ public class Response
     }
 
     #region 캐릭터 관련 모델
+    [Serializable]
     public class Res_EquipCharacter
     {
         public int Level { get; set; }
@@ -68,6 +73,7 @@ public class Response
     #endregion
 
     #region 미션 관련 모델
+    [Serializable]
     public class Res_DailyMission
     {
         public int Daily_Mission_Index { get; set; }

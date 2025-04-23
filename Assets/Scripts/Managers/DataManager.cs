@@ -4,8 +4,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+
+[Serializable]
+public class userData
+{
+    public int User_Index;
+    public string Nickname;
+    public bool Is_Banned;
+    public bool Is_Deleted;
+    public int TogetherDay;
+    public int FoodCount;
+    public int PlayCount;
+    public int Exp;
+    public DateTime Last_Login_At;
+    public List<Response.User_Character> UserCharacters;
+    public List<Response.User_Inventory> UserInventories;
+    public List<Response.User_Equip> UserEquips;
+    public List<Response.User_Goods> UserGoods;
+    public List<Response.User_Daily_Missions> UserDailyMission;
+}
 
 public class DataManager : MonoBehaviour
 {
@@ -13,7 +33,11 @@ public class DataManager : MonoBehaviour
 
     private Dictionary<string, object> loadedData = new Dictionary<string, object>();
 
-    private void Awake()
+    public userData CurrentUser { get; private set; }
+
+    [SerializeField] userData debugUserData;
+
+    private async void Awake()
     {
         if (Instance != null)
         {
@@ -24,7 +48,38 @@ public class DataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        LoadAllJsonDataFromDataClass();
+        LoadAllJsonDataFromDataClass(); 
+    }
+
+    public void SetUserData(userData data)
+    {
+        if (data == null)
+        {
+            Debug.Log("[DataManager] 서버에서 유저 데이터를 받지 못했습니다. 디버그 데이터로 대체합니다.");
+            if (debugUserData.TogetherDay == 0)
+                debugUserData.TogetherDay = 1;
+
+            CurrentUser = debugUserData;
+            if(debugUserData.FoodCount == 0)
+            {
+                if (define.tableDic.TryGetValue(1, out var foodDefine))
+                {
+                    CurrentUser.FoodCount = foodDefine.value;
+                }
+            }
+
+            if(debugUserData.PlayCount == 0)
+            {
+                if (define.tableDic.TryGetValue(1, out var playDefine))
+                {
+                    CurrentUser.PlayCount = playDefine.value;
+                }
+            }
+        }
+        else
+        {
+            CurrentUser = data;
+        }
     }
 
     private void LoadAllJsonDataFromDataClass()
@@ -56,6 +111,23 @@ public class DataManager : MonoBehaviour
         loadedData[sheetName] = data;
 
         Debug.Log($"[DataManager] Loaded: {sheetName} ({((IList)data).Count} entries)");
+
+        // define 타입이면 별도로 Dictionary 초기화
+        if (dataType == typeof(define))
+        {
+            define.tableDic.Clear(); // 기존 데이터 제거
+
+            foreach (var item in (IList)data)
+            {
+                var d = item as define;
+                if (d != null)
+                {
+                    define.tableDic[d.define_index] = d;
+                }
+            }
+
+            Debug.Log($"[DataManager] define.tableDic initialized with {define.tableDic.Count} entries");
+        }
     }
 
     public List<T> GetData<T>(string sheetName)

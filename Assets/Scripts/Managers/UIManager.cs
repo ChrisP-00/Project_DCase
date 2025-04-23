@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 public class UIManager : MonoSingleton<UIManager>
 {
     [SerializeField] public Animator testAnimator;
+    [SerializeField] private GameObject accountError;
 
     public async void OnClickGameStart()
     {
@@ -18,17 +19,12 @@ public class UIManager : MonoSingleton<UIManager>
             // scene 이동     
             SceneManager.LoadSceneAsync("MainScene");
         }
-        else
-        {
-            SceneManager.LoadSceneAsync("MainScene");
-        }
     }
     
     public void OnClickTestAngry()
     {
         testAnimator.SetTrigger("IsAngry");
     }
-
 
     public void OnClickTestHappy()
     {
@@ -38,5 +34,10 @@ public class UIManager : MonoSingleton<UIManager>
     public void OnClickTestHello()
     {
         testAnimator.SetTrigger("IsHello");
+    }
+
+    public void AccountErrorOn()
+    {
+        accountError.SetActive(true);
     }
 }

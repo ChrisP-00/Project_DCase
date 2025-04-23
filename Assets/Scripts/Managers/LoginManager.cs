@@ -2,15 +2,17 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utilities;
+using static Response;
 
 
 public class LoginManager : MonoSingleton<LoginManager>
 {
     [SerializeField] public bool hostDebug = true;
-
+    [SerializeField] public bool isServerON;
     [SerializeField] public string memberId;
 
     [SerializeField] public string nickName;
+
 
     private async void Start()
     {
@@ -66,10 +68,45 @@ public class LoginManager : MonoSingleton<LoginManager>
         else
         {
             DebugUtility.Log("1 Login success");
-             isLoginSuccess = true;
+            userData serverUser = new userData
+            {
+                User_Index = result.Data.UserAccount.User_Index,
+                Nickname = result.Data.UserAccount.Nickname,
+                Is_Banned = result.Data.UserAccount.Is_Banned,
+                Is_Deleted = result.Data.UserAccount.Is_Deleted,
+                Last_Login_At = result.Data.UserAccount.Last_Login_At,
+                UserCharacters = result.Data.UserCharacters,
+                UserInventories = result.Data.UserInventories,
+                UserEquips = result.Data.UserEquips,
+                UserGoods = result.Data.UserGoods,
+                UserDailyMission = result.Data.UserDailyMission
+            };
+
+            if (serverUser.Is_Banned || serverUser.Is_Deleted)
+            {
+                Debug.Log("밴 유저 또는 삭제 유저");
+                UIManager.Instance.AccountErrorOn();
+            }
+
+            DataManager.Instance.SetUserData(serverUser);
+            isLoginSuccess = true;
+        }
+
+        if(isServerON == false)
+        {
+            userData serverUser = null;
+            DataManager.Instance.SetUserData(serverUser);
+            if(DataManager.Instance.CurrentUser.Is_Banned == true || DataManager.Instance.CurrentUser.Is_Deleted)
+            {
+                UIManager.Instance.AccountErrorOn();
+                
+            }
+            else
+            {
+                isLoginSuccess = true;
+            }
         }
 
         return isLoginSuccess;
     }
-    
 }
