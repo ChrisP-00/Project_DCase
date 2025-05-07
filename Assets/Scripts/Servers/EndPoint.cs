@@ -6,6 +6,7 @@
 
     public static readonly string CreateAccount = Account + "CreateAccount";
     public static readonly string Login = Account + "Login";
+    public static readonly string LoginOrCreateAccount = Account + "LoginOrCreateAccount";
     public static readonly string Logout = Account + "Logout";
 
     public static readonly string EquipCharacter = Character + "EquipCharacter";

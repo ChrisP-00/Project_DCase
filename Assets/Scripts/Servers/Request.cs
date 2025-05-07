@@ -21,6 +21,7 @@ public class Request
     {
         [CanBeNull] public string MemberId { get; set; }
         public string? UnityDeviceNumber { get; set; }
+        public string? Nickname { get; set; }
     }
     #endregion
 

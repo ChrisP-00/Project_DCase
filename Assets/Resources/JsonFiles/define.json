@@ -1,0 +1,26 @@
+[
+  {
+    "define_index": 1,
+    "description": "계정 생성 밥주기 기본값",
+    "value": 5
+  },
+  {
+    "define_index": 2,
+    "description": "계정 생성 놀아주기 기본값",
+    "value": 5
+  },
+  {
+    "define_index": 3,
+    "description": "계정 생성 포인트 기본값",
+    "value": 0
+  },
+  {
+    "define_index": 4,
+    "value": 0
+  },
+  {
+    "define_index": 5,
+    "description": "리셋 레벨",
+    "value": 0
+  }
+]

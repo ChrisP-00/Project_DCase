@@ -1,41 +1,55 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-
 
 public class UIManager : MonoSingleton<UIManager>
 {
-    [SerializeField] public Animator testAnimator;
+    [Header("UIs")]
+    [SerializeField] private GameObject mainScreenUI;
+    [SerializeField] private GameObject storageScreenUI;
+    [SerializeField] private GameObject missionScreenUI;
+    
+    private GameObject currentScreenUI;
+    
     [SerializeField] private GameObject accountError;
 
-    public async void OnClickGameStart()
+    public void OpenMissionScreen()
     {
-        bool result = await LoginManager.Instance.Login();
-
-        if (result)
+        if (currentScreenUI != null)
         {
-            // scene 이동     
-            SceneManager.LoadSceneAsync("MainScene");
+            currentScreenUI.SetActive(false);
         }
-    }
-    
-    public void OnClickTestAngry()
-    {
-        testAnimator.SetTrigger("IsAngry");
-    }
-
-    public void OnClickTestHappy()
-    {
-        testAnimator.SetTrigger("IsHappy");
-    }
-    
-    public void OnClickTestHello()
-    {
-        testAnimator.SetTrigger("IsHello");
+        
+        mainScreenUI.SetActive(false);
+        missionScreenUI.SetActive(true);
+        currentScreenUI = missionScreenUI;
     }
 
+    public void OpenStorageScreen()
+    {
+        if (currentScreenUI != null)
+        {
+            currentScreenUI.SetActive(false);
+        }
+
+        mainScreenUI.SetActive(false);
+        storageScreenUI.SetActive(true);
+        currentScreenUI = storageScreenUI;
+    }
+
+    public void OnClickBack()
+    {
+        if (currentScreenUI != null)
+        {
+            mainScreenUI.SetActive(true);
+            currentScreenUI.SetActive(false);
+            currentScreenUI = null;
+            return;
+        }
+        
+        Console.WriteLine("카페24로 이동");
+    }
+    
     public void AccountErrorOn()
     {
         accountError.SetActive(true);

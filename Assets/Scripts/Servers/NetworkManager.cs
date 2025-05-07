@@ -123,6 +123,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
+            
+            Debug.Log($"[Network] Response Code : {request.responseCode}");
+            Debug.Log($"[Network] Response Text : {request.downloadHandler.text}");
+            Debug.Log($"[Network] Request Result : {request.result}");
+            
             try
             {
                 await request.SendWebRequest();
@@ -160,8 +165,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
                 if (request.result == UnityWebRequest.Result.Success)
                 {
+                    Debug.Log("[Network] Trying to parse JSON");
+                    
+                    Debug.Log($"[Network] Raw Response: {request.downloadHandler.text}");
+                    
                     var jsonResponse = JObject.Parse(request.downloadHandler.text);
-                    int resultCode = (int)jsonResponse["resultCodes"];
+                    int resultCode = (int)jsonResponse["resultCode"];
                     string resultMessage = jsonResponse["resultMessage"].ToString();
 
                     DebugUtility.Log(DebugColor.Yellow, endPoint,
@@ -169,6 +178,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
                     T data = jsonResponse["data"].ToObject<T>();
 
+                    Debug.Log("[Network] JSON parsing success");
+                    
                     return new Result<T>
                     {
                         ResultCodes = (ResultCodes)resultCode,

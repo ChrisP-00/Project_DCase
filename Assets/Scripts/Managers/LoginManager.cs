@@ -1,16 +1,17 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities;
 using static Response;
 
 
 public class LoginManager : MonoSingleton<LoginManager>
 {
+    [Header("Login info for test")]
     [SerializeField] public bool hostDebug = true;
     [SerializeField] public bool isServerON;
     [SerializeField] public string memberId;
-
     [SerializeField] public string nickName;
 
 
@@ -20,7 +21,79 @@ public class LoginManager : MonoSingleton<LoginManager>
         await HostHandler.CheckHostConnection();
     }
 
-    public async UniTask<bool> Login()
+    public async void OnClickGameStart()
+    {
+        bool result = await Login();
+
+        if (result)
+        {
+            // scene 이동     
+            SceneManager.LoadSceneAsync("MainScene");
+        }
+    }
+
+    private async UniTask<bool> Login()
+    {
+        bool isLoginSuccess = false;
+        
+        Request.Req_Login login = new Request.Req_Login();
+        
+        login.MemberId = memberId;
+        login.UnityDeviceNumber = SystemInfo.deviceUniqueIdentifier;
+        login.Nickname = nickName;
+        
+        var result = await ServerManager.Instance.LoginAsync(login);
+
+        if (result.ResultCodes != ResultCodes.Ok)
+        {
+            DebugUtility.Log($"{result.ResultCodes} : Result / {result.ResultMessage}");
+            
+        }
+        else
+        {
+            userData serverUser = new userData
+            {
+                Token = result.Data.Token,
+                User_Index = result.Data.UserAccount.User_Index,
+                Nickname = result.Data.UserAccount.Nickname,
+                Is_Banned = result.Data.UserAccount.Is_Banned,
+                Is_Deleted = result.Data.UserAccount.Is_Deleted,
+                Last_Login_At = result.Data.UserAccount.Last_Login_At,
+                UserCharacters = result.Data.UserCharacters,
+                UserInventories = result.Data.UserInventories,
+                UserEquips = result.Data.UserEquips,
+                UserGoods = result.Data.UserGoods,
+                UserDailyMission = result.Data.UserDailyMission
+            };
+
+            if (serverUser.Is_Banned || serverUser.Is_Deleted)
+            {
+                Debug.Log("밴 유저 또는 삭제 유저");
+                UIManager.Instance.AccountErrorOn();
+            }
+
+            DataManager.Instance.SetUserData(serverUser);
+            isLoginSuccess = true;
+        }
+        
+        if(isServerON == false)
+        {
+            userData serverUser = null;
+            DataManager.Instance.SetUserData(serverUser);
+            if(DataManager.Instance.CurrentUser.Is_Banned == true || DataManager.Instance.CurrentUser.Is_Deleted)
+            {
+                UIManager.Instance.AccountErrorOn();
+                
+            }
+            else
+            {
+                isLoginSuccess = true;
+            }
+        }
+        return isLoginSuccess;
+    }
+    
+    private async UniTask<bool> Login1()
     {
         bool isLoginSuccess = false;
         

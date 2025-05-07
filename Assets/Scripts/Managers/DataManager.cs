@@ -11,6 +11,7 @@ using UnityEngine;
 [Serializable]
 public class userData
 {
+    public string Token;
     public int User_Index;
     public string Nickname;
     public bool Is_Banned;
@@ -32,6 +33,7 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance { get; private set; }
 
     private Dictionary<string, object> loadedData = new Dictionary<string, object>();
+    
 
     public userData CurrentUser { get; private set; }
 
@@ -79,6 +81,7 @@ public class DataManager : MonoBehaviour
         else
         {
             CurrentUser = data;
+            debugUserData = data;
         }
     }
 

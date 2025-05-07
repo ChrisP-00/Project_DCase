@@ -12,7 +12,7 @@ public class ServerManager : MonoSingleton<ServerManager>
     
     public async UniTask<Result<Response.Res_Login>> LoginAsync(Request.Req_Login requestBody)
     {
-        Result<Response.Res_Login> result = await NetworkManager.Instance.PostResultAsync<Response.Res_Login>(EndPoint.Login , requestBody);
+        Result<Response.Res_Login> result = await NetworkManager.Instance.PostResultAsync<Response.Res_Login>(EndPoint.LoginOrCreateAccount , requestBody);
         return result;
     }
     
