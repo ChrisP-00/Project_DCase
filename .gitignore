@@ -79,3 +79,9 @@ Assets/Live2D.meta
 Assets/Live2DModels.meta
 Assets/Live2DRenderTexture.renderTexture
 Assets/Live2DRenderTexture.renderTexture.meta
+
+Assets/[Pp]lugins/
+Assets/[Pp]lugins*
+Assets/[Rr]esources/
+Assets/[Ss]treamingAssets/
+Assets/[Ss]treamingAssets*
