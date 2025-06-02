@@ -18,17 +18,38 @@ public class LoginManager : MonoSingleton<LoginManager>
     private async void Start()
     {
         Debug.Log("LoginManager start ");
-        await HostHandler.CheckHostConnection();
+        try
+        {
+            await HostHandler.CheckHostConnection();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"❌ Host check failed: {e.Message}");
+        }
     }
 
     public async void OnClickGameStart()
     {
-        bool result = await Login();
-
-        if (result)
+        try
         {
-            // scene 이동     
-            SceneManager.LoadSceneAsync("MainScene");
+            bool isSuccess = await Login();
+
+            if (isSuccess)
+            {
+                // WebGL에서는 반드시 화면 전환!
+                SceneManager.LoadScene("MainScene");
+            }
+            else
+            {
+                // WebGL에서는 반드시 화면 전환!
+                Console.WriteLine($"[Login] Login failed");
+                SceneManager.LoadScene("MainScene");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"[Network] Connection failed : {e.Message}");
+            SceneManager.LoadScene("MainScene");
         }
     }
 
