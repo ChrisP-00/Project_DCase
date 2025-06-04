@@ -28,7 +28,7 @@ public class LoginManager : MonoSingleton<LoginManager>
         }
     }
 
-    public async void OnClickGameStart()
+    /*public async void OnClickGameStart()
     {
         try
         {
@@ -51,9 +51,9 @@ public class LoginManager : MonoSingleton<LoginManager>
             Console.WriteLine($"[Network] Connection failed : {e.Message}");
             SceneManager.LoadScene("MainScene");
         }
-    }
+    }*/
 
-    private async UniTask<bool> Login()
+    /*private async UniTask<bool> Login()
     {
         bool isLoginSuccess = false;
         
@@ -202,5 +202,5 @@ public class LoginManager : MonoSingleton<LoginManager>
         }
 
         return isLoginSuccess;
-    }
+    }*/
 }

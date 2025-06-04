@@ -1,40 +1,70 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+
+public enum ScreenType
+{
+    Main,
+    Mission,
+    Storage,
+}
+
+[System.Serializable]
+public class ScreenUISet
+{
+    public ScreenType screenType;
+    public GameObject screenUI;
+    public GameObject topBarUI;
+}
 
 public class UIManager : MonoSingleton<UIManager>
 {
     [Header("UIs")]
     [SerializeField] private GameObject mainScreenUI;
-    [SerializeField] private GameObject storageScreenUI;
-    [SerializeField] private GameObject missionScreenUI;
+    [SerializeField] private ScreenType defaultScreen = ScreenType.Main;
     
+    [Header("Screen Sets")]
+    [SerializeField] private List<ScreenUISet> screenUISets;
+    
+    private Dictionary<ScreenType, ScreenUISet> configMap;
     private GameObject currentScreenUI;
     
-    [SerializeField] private GameObject accountError;
-
-    public void OpenMissionScreen()
+    private void Awake()
     {
-        if (currentScreenUI != null)
+        configMap = new Dictionary<ScreenType, ScreenUISet>();
+
+        foreach (var set in screenUISets)
         {
-            currentScreenUI.SetActive(false);
+            if (set != null)
+                configMap[set.screenType] = set;
         }
-        
-        mainScreenUI.SetActive(false);
-        missionScreenUI.SetActive(true);
-        currentScreenUI = missionScreenUI;
     }
 
-    public void OpenStorageScreen()
+    private void Start()
     {
-        if (currentScreenUI != null)
+        OpenScreen(defaultScreen);
+    }
+
+    public void OpenScreen(ScreenType type)
+    {
+        if (!configMap.TryGetValue(type, out var config))
         {
-            currentScreenUI.SetActive(false);
+            Debug.LogWarning($"Screen config for {type} not found.");
+            return;
         }
 
-        mainScreenUI.SetActive(false);
-        storageScreenUI.SetActive(true);
-        currentScreenUI = storageScreenUI;
+        if (currentScreenUI != null)
+            currentScreenUI.SetActive(false);
+        
+        foreach (var cfg in configMap.Values)
+            cfg.topBarUI?.SetActive(false);
+
+        config.screenUI.SetActive(true);
+        config.topBarUI?.SetActive(true);
+
+        currentScreenUI = config.screenUI;
     }
 
     public void OnClickBack()
@@ -44,14 +74,6 @@ public class UIManager : MonoSingleton<UIManager>
             mainScreenUI.SetActive(true);
             currentScreenUI.SetActive(false);
             currentScreenUI = null;
-            return;
         }
-        
-        Console.WriteLine("카페24로 이동");
-    }
-    
-    public void AccountErrorOn()
-    {
-        accountError.SetActive(true);
     }
 }

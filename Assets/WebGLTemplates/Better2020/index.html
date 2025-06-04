@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, orientation=portrait, viewport-fit=cover">
+    <!-- 화면 회전 방지 메타 태그 추가 -->
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    
+    <!-- 구글 폰트 로드 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+      html {
+        height: 100%;
+        touch-action: none;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family: 'Noto Sans KR', sans-serif;
+        -webkit-text-size-adjust: none;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      #unity-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        touch-action: none;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        touch-action: none;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        -ms-interpolation-mode: nearest-neighbor;
+      }
+
+      #unity-loading-bar {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      }
+
+      #unity-footer {
+        display: none;
+      }
+
+      /* 모바일 최적화 */
+      @media screen and (max-width: 480px) {
+        #unity-canvas {
+          width: 100vw;
+          height: 100vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="unity-container">
+      <canvas id="unity-canvas" tabindex="1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-footer">
+        <div id="unity-fullscreen-button"></div>
+      </div>
+    </div>
+    <script>
+      // 화면 회전 잠금 함수
+      function lockScreenOrientation() {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('portrait').catch(function(error) {
+            console.log('화면 회전 잠금 실패:', error);
+          });
+        }
+      }
+
+      // 터치 이벤트 방지
+      document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+
+      // 페이지 로드 시 화면 회전 잠금 실행
+      document.addEventListener('DOMContentLoaded', lockScreenOrientation);
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      var config = {
+        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "{{{ COMPANY_NAME }}}",
+        productName: "{{{ PRODUCT_NAME }}}",
+        productVersion: "{{{ PRODUCT_VERSION }}}",
+        // WebGL 성능 설정 추가
+        powerPreference: "high-performance",
+        devicePixelRatio: window.devicePixelRatio || 1,
+      };
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+
+      // 캔버스 크기 최적화
+      function setCanvasSize() {
+        var rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+
+      // 터치 이벤트 처리 함수
+      function handleTouch(e) {
+        e.preventDefault();
+        var rect = canvas.getBoundingClientRect();
+        var touch = e.touches[0];
+        
+        // iframe 내부 좌표로 변환
+        var x = touch.clientX - rect.left;
+        var y = touch.clientY - rect.top;
+        
+        if (window.unityInstance) {
+          // Unity로 터치 좌표 전달
+          window.unityInstance.SendMessage('EventSystem', 'OnPointerDown', x + ',' + y);
+        }
+      }
+
+      // 모바일 기기 최적화
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        
+        // 터치 이벤트 리스너 등록
+        canvas.addEventListener('touchstart', handleTouch, { passive: false });
+        canvas.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, { passive: false });
+      }
+
+      // 초기 설정 및 리사이즈 이벤트
+      setCanvasSize();
+      window.addEventListener('resize', setCanvasSize);
+
+      // 폰트 로드 완료 확인
+      document.fonts.ready.then(() => {
+        loadingBar.style.display = "block";
+
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            progressBarFull.style.width = 100 * progress + "%";
+          }).then((unityInstance) => {
+            window.unityInstance = unityInstance;
+            loadingBar.style.display = "none";
+            
+            // 포커스 설정
+            canvas.focus();
+          }).catch((message) => {
+            alert(message);
+          });
+        };
+        document.body.appendChild(script);
+      });
+
+      canvas.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        if (window.unityInstance) {
+          window.unityInstance.SendMessage('EventSystem', 'OnPointerUp', '0,0');
+        }
+      }, false);
+    </script>
+  </body>
+</html>
