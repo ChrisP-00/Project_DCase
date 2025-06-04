@@ -5,32 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="191cd114-2ec6-4345-807b-c00f09650068" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Project_DCase/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Project_DCase/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fonts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Icons/Button_basic3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Icons/Button_basic3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LoadingScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LoadingScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/StartScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StartScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/LoginManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/LoginManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Build Profiles/New Web Profile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Build Profiles/New Web Profile.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Square.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Square.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/Rudolf_ver_space2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/Rudolf_ver_space2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image3.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image3.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image4.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image4.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image5.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image5.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image6.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image6.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/image7.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/image7.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestAssets/images.jpg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestAssets/images.jpg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Universal Render Pipeline Asset.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Universal Render Pipeline Asset.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.connect.share/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.connect.share/Settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +18,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ScriptableObjects/UIScreenConfig.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UIs/UIScreenOpener.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.gindemit.rlottie@a713253f6144/Runtime/AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@24b10291b18f/Editor/TMP/TMPro_FontAssetCreatorWindow.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@24b10291b18f/Runtime/UGUI/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@24b10291b18f/Runtime/UGUI/UI/Core/Layout/ContentSizeFitter.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -164,6 +141,7 @@
       <workItem from="1748486095262" duration="35000" />
       <workItem from="1749004403043" duration="3329000" />
       <workItem from="1749013302995" duration="1211000" />
+      <workItem from="1749023393125" duration="88000" />
     </task>
     <servers />
   </component>
