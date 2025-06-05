@@ -75,5 +75,18 @@ public class UIManager : MonoSingleton<UIManager>
             currentScreenUI.SetActive(false);
             currentScreenUI = null;
         }
+        else
+        {
+            #if UNITY_WEBGL
+                GoToCafe24Homepage();
+            #endif
+        }
+    }
+
+
+
+    private void GoToCafe24Homepage()
+    {
+        Application.ExternalEval("window.goToCafe24Homepage()");
     }
 }
