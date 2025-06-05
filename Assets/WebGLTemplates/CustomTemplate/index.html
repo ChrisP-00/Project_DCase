@@ -198,10 +198,10 @@
             
             // 포커스 설정
             canvas.focus();
-
-            // 카페24 홈페이지로 이동하는 함수
-            window.goToCafe24Homepage = function() {
-            window.location.href = 'https://www.d-ca.se';
+            
+            // 디케이스 홈페이지로 이동하는 함수
+            window.GoToMainPage = function () {
+              parent.location.href = "/";
             };
           }).catch((message) => {
             alert(message);

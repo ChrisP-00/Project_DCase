@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
-
 
 public enum ScreenType
 {
@@ -21,6 +19,9 @@ public class ScreenUISet
 
 public class UIManager : MonoSingleton<UIManager>
 {
+    [DllImport("__Internal")]
+    private static extern void GoToMainPage();
+    
     [Header("UIs")]
     [SerializeField] private GameObject mainScreenUI;
     [SerializeField] private ScreenType defaultScreen = ScreenType.Main;
@@ -71,22 +72,23 @@ public class UIManager : MonoSingleton<UIManager>
     {
         if (currentScreenUI != null)
         {
+            // 메인 화면으로 돌아갈 때 TopBar도 함께 처리
+            foreach (var cfg in configMap.Values)
+            cfg.topBarUI?.SetActive(false);
+
+            // Main 화면의 TopBar 활성화
+            if (configMap.TryGetValue(ScreenType.Main, out var mainConfig))
+                mainConfig.topBarUI?.SetActive(true);
+
             mainScreenUI.SetActive(true);
             currentScreenUI.SetActive(false);
             currentScreenUI = null;
         }
         else
         {
-            #if UNITY_WEBGL
-                GoToCafe24Homepage();
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                GoToMainPage(); // <- 여기를 실행하면 JS 함수 호출됨
             #endif
         }
-    }
-
-
-
-    private void GoToCafe24Homepage()
-    {
-        Application.ExternalEval("window.goToCafe24Homepage()");
     }
 }
