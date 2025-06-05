@@ -4,21 +4,34 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, orientation=portrait, viewport-fit=cover">
-    <!-- 화면 회전 방지 메타 태그 추가 -->
-    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
-    <title>{{{ PRODUCT_NAME }}}</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-    
-    <!-- 구글 폰트 로드 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    
+
     <style>
+      /* 웹폰트 정의 */
+      @font-face {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        src: url('TemplateData/NotoSans-Regular.ttf') format('truetype'),
+             local('Noto Sans KR Regular'),
+             local('NotoSansKR-Regular');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        src: url('TemplateData/NotoSansKR-Medium.ttf') format('truetype'),
+             local('Noto Sans KR Medium'),
+             local('NotoSansKR-Medium');
+        font-display: swap;
+      }
+
       html {
         height: 100%;
         touch-action: none;
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
       }
 
       body {
@@ -27,8 +40,7 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
-        font-family: 'Noto Sans KR', sans-serif;
-        -webkit-text-size-adjust: none;
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', '맑은 고딕', sans-serif;
         background: #000;
         display: flex;
         justify-content: center;
@@ -36,9 +48,6 @@
         touch-action: none;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
       }
 
@@ -101,36 +110,34 @@
       </div>
     </div>
     <script>
-      // 화면 회전 잠금 함수
-      function lockScreenOrientation() {
-        if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('portrait').catch(function(error) {
-            console.log('화면 회전 잠금 실패:', error);
-          });
-        }
-      }
 
       // 터치 이벤트 방지
       document.addEventListener('touchmove', function(e) {
         e.preventDefault();
       }, { passive: false });
 
-      // 페이지 로드 시 화면 회전 잠금 실행
-      document.addEventListener('DOMContentLoaded', lockScreenOrientation);
-
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      var loaderUrl = buildUrl + "/TestBuild.loader.js";
       var config = {
-        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
-        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
-        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+        dataUrl: buildUrl + "/TestBuild.data",
+        frameworkUrl: buildUrl + "/TestBuild.framework.js",
+        codeUrl: buildUrl + "/TestBuild.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "{{{ COMPANY_NAME }}}",
-        productName: "{{{ PRODUCT_NAME }}}",
-        productVersion: "{{{ PRODUCT_VERSION }}}",
-        // WebGL 성능 설정 추가
+        companyName: "DefaultCompany",
+        productName: "Project_DCase",
+        productVersion: "1.0",
+        showBanner: false,
+        // WebGL 성능 설정
         powerPreference: "high-performance",
         devicePixelRatio: window.devicePixelRatio || 1,
+        // WebAssembly 설정
+        wasmCodeUrl: buildUrl + "/TestBuild.wasm",
+        wasmFrameworkUrl: buildUrl + "/TestBuild.framework.js",
+        asmCodeUrl: buildUrl + "/TestBuild.asm.js",
+        asmMemoryUrl: buildUrl + "/TestBuild.asm.mem",
+        companyName: "DefaultCompany",
+        productName: "Project_DCase",
+        productVersion: "1.0"
       };
 
       var container = document.querySelector("#unity-container");
